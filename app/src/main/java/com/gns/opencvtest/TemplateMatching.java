@@ -1,5 +1,6 @@
 package com.gns.opencvtest;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +11,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.DrawableRes;
 
@@ -72,5 +74,13 @@ public class TemplateMatching {
         );
         canvas.drawRect(rect,p);
         return new BitmapDrawable(c.getResources(), imageBitmap);
+    }
+
+    public static Bitmap takeScreenshot(Activity c){
+        View v1 = c.getWindow().getDecorView().getRootView();
+        v1.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+        v1.setDrawingCacheEnabled(false);
+        return bitmap;
     }
 }

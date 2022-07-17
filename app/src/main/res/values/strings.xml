@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">OpenCVTest</string>
+    <string name="description">GosCalc uses Accessibility Services to perform touch actions.\nIf you activate this service, no personal data is stored.</string>
 </resources>
