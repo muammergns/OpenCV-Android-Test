@@ -1,4 +1,4 @@
-package com.gns.opencvtest;
+package com.gns.opencvtest.matching;
 
 import android.app.Activity;
 import android.content.Context;
@@ -42,7 +42,9 @@ public class TemplateMatching {
     }
 
     public static Mat resourceToMat(Context c, @DrawableRes int drawableId){
-        Bitmap decodeResource = BitmapFactory.decodeResource(c.getResources(),drawableId);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
+        Bitmap decodeResource = BitmapFactory.decodeResource(c.getResources(),drawableId,options);
         Bitmap copy = decodeResource.copy(Bitmap.Config.ARGB_8888,true);
         Mat mat = new Mat();
         Utils.bitmapToMat(copy,mat);
@@ -57,8 +59,7 @@ public class TemplateMatching {
         return mat;
     }
 
-    public static Drawable getFounded(Context c, Core.MinMaxLocResult mmr, Bitmap image, @DrawableRes int template){
-        Bitmap tmp = BitmapFactory.decodeResource(c.getResources(),template);
+    public static Drawable getFounded(Context c, Core.MinMaxLocResult mmr, Bitmap image, Mat mat){
         Bitmap imageBitmap = image.copy(Bitmap.Config.ARGB_8888, true);
         Canvas canvas = new Canvas(imageBitmap);
         Log.d(TAG, "Canvas: W:"+canvas.getWidth()+" H:"+canvas.getHeight());
@@ -69,8 +70,8 @@ public class TemplateMatching {
         Rect rect = new Rect(
                 Double.valueOf(mmr.maxLoc.x).intValue(),
                 Double.valueOf(mmr.maxLoc.y).intValue(),
-                Double.valueOf(mmr.maxLoc.x).intValue()+tmp.getWidth(),
-                Double.valueOf(mmr.maxLoc.y).intValue()+tmp.getHeight()
+                Double.valueOf(mmr.maxLoc.x).intValue()+mat.cols(),
+                Double.valueOf(mmr.maxLoc.y).intValue()+mat.rows()
         );
         canvas.drawRect(rect,p);
         return new BitmapDrawable(c.getResources(), imageBitmap);

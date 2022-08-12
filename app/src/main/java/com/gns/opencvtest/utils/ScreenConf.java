@@ -1,4 +1,4 @@
-package com.gns.opencvtest;
+package com.gns.opencvtest.utils;
 
 import android.content.Context;
 import android.content.res.Configuration;

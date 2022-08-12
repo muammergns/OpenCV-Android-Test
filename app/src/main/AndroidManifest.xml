@@ -8,7 +8,9 @@
     <!-- Needed to display the overlay_menu over other apps -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
 
     <application
@@ -45,7 +47,7 @@
         </service>
 
         <service
-            android:name=".ScreenshotService"
+            android:name=".screenshot.ScreenshotService"
             android:foregroundServiceType="mediaProjection"
             android:exported="false"
             android:permission="TODO">
