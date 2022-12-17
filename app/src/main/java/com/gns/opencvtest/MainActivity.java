@@ -21,10 +21,12 @@ import android.media.projection.MediaProjectionManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -92,7 +94,33 @@ public class MainActivity extends AppCompatActivity  {
                 imageView.setImageBitmap(bitmap);
             }
         }
+
+        click.setOnCheckedChangeListener((compoundButton, b) -> {
+            if(b){
+                if (!ClickService.isServiceEnable){
+                    goAccess();
+                }
+            }
+        });
     }
+
+    private void goAccess(){
+        Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+        Bundle bundle = new Bundle();
+        String showArgs = getApplicationInfo().packageName + "/" + ClickService.class.getName();
+        String EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key";
+        bundle.putString(EXTRA_FRAGMENT_ARG_KEY, showArgs);
+        intent.putExtra(EXTRA_FRAGMENT_ARG_KEY, showArgs);
+        String EXTRA_SHOW_FRAGMENT_ARGUMENTS = ":settings:show_fragment_args";
+        intent.putExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS, bundle);
+        access.launch(intent);
+    }
+
+    ActivityResultLauncher<Intent> access = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (!ClickService.isServiceEnable){
+            click.setChecked(false);
+        }
+    });
 
     ActivityResultLauncher<Intent> galeryLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {

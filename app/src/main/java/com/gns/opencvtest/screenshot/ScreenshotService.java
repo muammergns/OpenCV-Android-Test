@@ -9,6 +9,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
@@ -34,6 +35,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.gns.opencvtest.BuildConfig;
+import com.gns.opencvtest.ClickService;
 import com.gns.opencvtest.matching.TemplateMatching;
 import com.gns.opencvtest.utils.ImageStorageManager;
 import com.gns.opencvtest.MainActivity;
@@ -166,6 +168,14 @@ public class ScreenshotService extends Service {
             }
             if (clickPosition){
                 //todo click
+                if (ClickService.isServiceEnable){
+                    Path path = new Path();
+                    path.moveTo(
+                            Double.valueOf(mmr.maxLoc.x+Integer.valueOf(templateMat.cols()).doubleValue()/2).intValue(),
+                            Double.valueOf(mmr.maxLoc.y+Integer.valueOf(templateMat.rows()).doubleValue()/2).intValue()
+                    );
+                    ClickService.click.play(path,50);
+                }
             }
         }
         Log.d(TAG, "processImage: ok");
